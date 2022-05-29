@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import pers.prover.mall.common.utils.PageUtils;
-import pers.prover.common.utils.Query;
+import pers.prover.mall.common.utils.Query;
 
 import pers.prover.mall.product.dao.AttrDao;
 import pers.prover.mall.product.entity.AttrEntity;

@@ -23,10 +23,14 @@ mall
 
 #### 后端技术
 
-| 技术       | 说明           | 版本                   |
-| ---------- | -------------- | ---------------------- |
-| SpringBoot | 微服务模块开发 | 2.3.11.RELEASE         |
-| OpenFeign  | 远程调用       | SpringCloud.Hoxton.SR9 |
+| 技术        | 说明           | 版本                             |
+| ----------- | -------------- | -------------------------------- |
+| SpringBoot  | 微服务模块开发 | 2.3.11.RELEASE                   |
+| OpenFeign   | 远程调用       | SpringCloud.Hoxton.SR9           |
+| Nacos       | 微服务注册中心 | SpringCloudAlibaba.2.2.3.RELEASE |
+| MyBatisPlus | ORM 框架       | 3.4.2                            |
+| Mysql       | 数据库         | 8.0.17                           |
+| Lombok      | Java 工具库    | 1.16.18                          |
 
 #### 前端技术
 
