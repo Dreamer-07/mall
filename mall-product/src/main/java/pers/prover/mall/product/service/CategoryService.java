@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import pers.prover.mall.common.utils.PageUtils;
 import pers.prover.mall.product.entity.CategoryEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +17,17 @@ import java.util.Map;
 public interface CategoryService extends IService<CategoryEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    /**
+     * 获取树型列表
+     * @return
+     */
+    List<CategoryEntity> treeList();
+
+    /**
+     * 删除指定标识集合(ids)的数据
+     * @param ids
+     */
+    void removeByIds(Long[] ids);
 }
 
