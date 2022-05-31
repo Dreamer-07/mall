@@ -1,0 +1,15 @@
+server:
+  port: 7007
+spring:
+  application:
+    name: mall-thirdparty
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    alicloud:
+      access-key: LTAI5t9FXy6ywYqzsu2TK2Cy
+      secret-key: scQEtNGG7zfq7pL3HS20XRL0YIDdiM
+      oss:
+        endpoint: oss-cn-shenzhen.aliyuncs.com
+        bucketName: prover-mall

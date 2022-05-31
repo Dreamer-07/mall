@@ -18,4 +18,9 @@ spring:
           uri: lb://mall-product
           order: 1
           predicates:
-            - Path=/**/product/**
+            - Path=/*/product/**
+        - id: thirdparty_route
+          uri: lb://mall-thirdparty
+          order: 1
+          predicates:
+            - Path=/*/thirdparty/**

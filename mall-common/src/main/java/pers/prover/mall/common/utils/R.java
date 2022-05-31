@@ -8,7 +8,9 @@
 
 package pers.prover.mall.common.utils;
 
+import ch.qos.logback.core.status.ErrorStatus;
 import org.apache.http.HttpStatus;
+import pers.prover.mall.common.enums.ErrorCodeEnum;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +34,10 @@ public class R extends HashMap<String, Object> {
 	
 	public static R error(String msg) {
 		return error(HttpStatus.SC_INTERNAL_SERVER_ERROR, msg);
+	}
+
+	public static R error(ErrorCodeEnum errorCodeEnum) {
+		return error(errorCodeEnum.getCode(), errorCodeEnum.getMessage());
 	}
 	
 	public static R error(int code, String msg) {

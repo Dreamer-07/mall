@@ -1,15 +1,14 @@
-package pers.prover.mall.product.controller;
+package pers.prover.mall.product.controller.admin;
 
 import java.util.Arrays;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
+import pers.prover.mall.common.validation.group.AddGroup;
+import pers.prover.mall.common.validation.group.UpdateGroup;
 import pers.prover.mall.product.entity.BrandEntity;
 import pers.prover.mall.product.service.BrandService;
 import pers.prover.mall.common.utils.PageUtils;
@@ -25,8 +24,8 @@ import pers.prover.mall.common.utils.R;
  * @date 2022-05-29 15:29:02
  */
 @RestController
-@RequestMapping("product/brand")
-public class BrandController {
+@RequestMapping("/admin/product/brand")
+public class BrandAdminController {
     @Autowired
     private BrandService brandService;
 
@@ -58,7 +57,7 @@ public class BrandController {
      */
     @RequestMapping("/save")
     // @RequiresPermissions("product:brand:save")
-    public R save(@RequestBody BrandEntity brand){
+    public R save(@Validated(AddGroup.class) @RequestBody BrandEntity brand){
 		brandService.save(brand);
 
         return R.ok();
@@ -68,10 +67,8 @@ public class BrandController {
      * 修改
      */
     @RequestMapping("/update")
-    // @RequiresPermissions("product:brand:update")
-    public R update(@RequestBody BrandEntity brand){
+    public R update(@Validated(UpdateGroup.class) @RequestBody BrandEntity brand){
 		brandService.updateById(brand);
-
         return R.ok();
     }
 
@@ -79,7 +76,6 @@ public class BrandController {
      * 删除
      */
     @RequestMapping("/delete")
-    // @RequiresPermissions("product:brand:delete")
     public R delete(@RequestBody Long[] brandIds){
 		brandService.removeByIds(Arrays.asList(brandIds));
 
