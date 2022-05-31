@@ -1,20 +1,17 @@
-package pers.prover.mall.product.controller;
+package pers.prover.mall.product.controller.admin;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import pers.prover.mall.product.entity.AttrGroupEntity;
 import pers.prover.mall.product.service.AttrGroupService;
 import pers.prover.mall.common.utils.PageUtils;
 import pers.prover.mall.common.utils.R;
-
+import pers.prover.mall.product.service.CategoryService;
 
 
 /**
@@ -25,20 +22,20 @@ import pers.prover.mall.common.utils.R;
  * @date 2022-05-29 15:29:02
  */
 @RestController
-@RequestMapping("product/attrgroup")
-public class AttrGroupController {
+@RequestMapping("/admin/product/attrgroup")
+public class AttrGroupAdminController {
     @Autowired
     private AttrGroupService attrGroupService;
+    @Autowired
+    private CategoryService categoryService;
 
     /**
      * 列表
      */
-    @RequestMapping("/list")
-    // @RequiresPermissions("product:attrgroup:list")
-    public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = attrGroupService.queryPage(params);
-
-        return R.ok().put("page", page);
+    @GetMapping("/list/{catelogId}")
+    public R list(@RequestParam Map<String, Object> params, @PathVariable Long catelogId) {
+        PageUtils page = attrGroupService.queryPage(params, catelogId);
+        return R.ok().put("data", page);
     }
 
 
@@ -49,7 +46,8 @@ public class AttrGroupController {
     // @RequiresPermissions("product:attrgroup:info")
     public R info(@PathVariable("attrGroupId") Long attrGroupId){
 		AttrGroupEntity attrGroup = attrGroupService.getById(attrGroupId);
-
+        List<Long> catlogPath = categoryService.getCatelogPath(attrGroup.getCatelogId());
+        attrGroup.setCatelogPath(catlogPath);
         return R.ok().put("attrGroup", attrGroup);
     }
 

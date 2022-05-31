@@ -2,10 +2,7 @@ package pers.prover.mall.product.service.impl;
 
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -42,6 +39,26 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     public void removeByIds(Long[] ids) {
         // TODO 判断数据是否被引用
         baseMapper.deleteBatchIds(Arrays.asList(ids));
+    }
+
+    @Override
+    public List<Long> getCatelogPath(Long catelogId) {
+        CategoryEntity categoryEntity = this.getById(catelogId);
+        List<Long> categoryPath = new ArrayList<>();
+        getCategoryIParentIdPath(categoryEntity, categoryPath);
+        return categoryPath;
+    }
+
+    /**
+     * 获取分类的父id路径
+     * @param categoryEntity
+     * @param categoryPath
+     */
+    private void getCategoryIParentIdPath(CategoryEntity categoryEntity, List<Long> categoryPath) {
+        if (categoryEntity.getParentCid() != 0) {
+            getCategoryIParentIdPath(this.getById(categoryEntity.getParentCid()), categoryPath);
+        }
+        categoryPath.add(categoryEntity.getCatId());
     }
 
     private List<CategoryEntity> covertTreeList(List<CategoryEntity> categoryEntityList, long parentId) {

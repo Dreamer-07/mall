@@ -20,6 +20,7 @@ public class LimitValueValidatorByInt implements ConstraintValidator<LimitValueV
 
     @Override
     public void initialize(LimitValueValid constraintAnnotation) {
+        // 获取注解中的值
         int[] nums = constraintAnnotation.value();
         for (int num : nums) {
             values.add(num);
@@ -28,6 +29,7 @@ public class LimitValueValidatorByInt implements ConstraintValidator<LimitValueV
 
     @Override
     public boolean isValid(Integer i, ConstraintValidatorContext constraintValidatorContext) {
+        // 校验注解
         if (i == null) {
             return true;
         }
