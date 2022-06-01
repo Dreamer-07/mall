@@ -7,11 +7,14 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import pers.prover.mall.product.entity.AttrEntity;
 import pers.prover.mall.product.entity.AttrGroupEntity;
+import pers.prover.mall.product.service.AttrAttrgroupRelationService;
 import pers.prover.mall.product.service.AttrGroupService;
 import pers.prover.mall.common.utils.PageUtils;
 import pers.prover.mall.common.utils.R;
 import pers.prover.mall.product.service.CategoryService;
+import pers.prover.mall.product.vo.AttrAttrgroupRelationReqVo;
 
 
 /**
@@ -52,6 +55,28 @@ public class AttrGroupAdminController {
     }
 
     /**
+     * 获取属性分组的关联的所有属性
+     * @param attrGroupId
+     * @return
+     */
+    @GetMapping("{attrGroupId}/attr/relation")
+    public R getAttrGroupRelationAttr(@PathVariable String attrGroupId) {
+        List<AttrEntity> attrEntities = attrGroupService.getAttrGroupRelationAttr(attrGroupId);
+        return R.ok().put("data", attrEntities);
+    }
+
+    /**
+     * 获取属性分组没有关联的其他属性
+     * @param attrGroupId
+     * @return
+     */
+    @GetMapping("{attrGroupId}/noattr/relation")
+    public R getAttrGroupNoRelationAttr(@RequestParam Map<String, Object> params, @PathVariable String attrGroupId) {
+        PageUtils page = attrGroupService.getAttrGroupNoRelationAttr(params, attrGroupId);
+        return R.ok().put("page", page);
+    }
+
+    /**
      * 保存
      */
     @RequestMapping("/save")
@@ -59,6 +84,12 @@ public class AttrGroupAdminController {
     public R save(@RequestBody AttrGroupEntity attrGroup){
 		attrGroupService.save(attrGroup);
 
+        return R.ok();
+    }
+
+    @PostMapping("/attr/relation")
+    public R saveAttrRelation(@RequestBody List<AttrAttrgroupRelationReqVo> attrAttrgroupRelationReqVos) {
+        attrGroupService.saveAttrRelation(attrAttrgroupRelationReqVos);
         return R.ok();
     }
 
@@ -76,11 +107,9 @@ public class AttrGroupAdminController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
-    // @RequiresPermissions("product:attrgroup:delete")
-    public R delete(@RequestBody Long[] attrGroupIds){
-		attrGroupService.removeByIds(Arrays.asList(attrGroupIds));
-
+    @PostMapping("/attr/relation/delete")
+    public R delete(@RequestBody List<AttrAttrgroupRelationReqVo> attrAttrgroupRelationReqVos) {
+        attrGroupService.removeBatch(attrAttrgroupRelationReqVos);
         return R.ok();
     }
 

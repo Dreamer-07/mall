@@ -52,13 +52,13 @@ public class CategoryAdminController {
     /**
      * 修改
      */
-    @PutMapping("/update")
+    @PostMapping("/update")
     public R update(@RequestBody CategoryEntity category){
-        categoryService.updateById(category);
+        categoryService.updateCascade(category);
         return R.ok();
     }
 
-    @PutMapping("/update/batch")
+    @PostMapping("/update/batch")
     public R updateBatch(@RequestBody CategoryEntity[] categoryEntityList) {
         categoryService.updateBatchById(Arrays.asList(categoryEntityList));
         return R.ok();

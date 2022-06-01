@@ -1,9 +1,13 @@
 package pers.prover.mall.product.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import pers.prover.mall.common.utils.PageUtils;
 import pers.prover.mall.product.entity.AttrEntity;
+import pers.prover.mall.product.vo.AttrReqVo;
+import pers.prover.mall.product.vo.AttrRespVo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +20,40 @@ import java.util.Map;
 public interface AttrService extends IService<AttrEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    /**
+     * 保存 Attr
+     * @param attrReqVo
+     */
+    void save(AttrReqVo attrReqVo);
+
+
+    /**
+     * 查找规格参数列表分页
+     * @param params
+     * @return
+     */
+    PageUtils queryBaseListPage(Map<String, Object> params, Long catelogId);
+
+    /**
+     * 获取 attr detail info 在 admin(管理系统) 中
+     * @param attrId
+     * @return
+     */
+    AttrRespVo getDetailInAdmin(Long attrId);
+
+    /**
+     * 修改 Attr
+     * @param attrReqVo
+     */
+    void updateById(AttrReqVo attrReqVo);
+
+    /**
+     * 获取分类中不在 attrIds 中的属性
+     * @param attrIds
+     * @param catelogId
+     * @return
+     */
+    PageUtils pageByNotInIds(Map<String, Object> params, List<Long> attrIds, Long catelogId);
 }
 

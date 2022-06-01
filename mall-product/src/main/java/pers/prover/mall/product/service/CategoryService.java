@@ -31,10 +31,23 @@ public interface CategoryService extends IService<CategoryEntity> {
     void removeByIds(Long[] ids);
 
     /**
-     * 获取分类路径
+     * 获取能表示分类继承关系的 id 集合
      * @param catelogId
      * @return
      */
     List<Long> getCatelogPath(Long catelogId);
+
+    /**
+     * 级联更新分类信息
+     * @param category
+     */
+    void updateCascade(CategoryEntity category);
+
+    /**
+     * 获取分类继承关系的字符串
+     * @param catelogId
+     * @return
+     */
+    String getCatelogPathStr(Long catelogId);
 }
 
