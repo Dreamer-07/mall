@@ -1,20 +1,18 @@
-package pers.prover.mall.ware.controller;
+package pers.prover.mall.ware.controller.admin;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import pers.prover.mall.ware.entity.PurchaseEntity;
 import pers.prover.mall.ware.service.PurchaseService;
 import pers.prover.mall.common.utils.PageUtils;
 import pers.prover.mall.common.utils.R;
-
+import pers.prover.mall.ware.vo.MergeVo;
+import pers.prover.mall.ware.vo.PurchaseReqVo;
 
 
 /**
@@ -25,8 +23,8 @@ import pers.prover.mall.common.utils.R;
  * @date 2022-05-29 15:30:45
  */
 @RestController
-@RequestMapping("ware/purchase")
-public class PurchaseController {
+@RequestMapping("admin/ware/purchase")
+public class PurchaseAdminController {
     @Autowired
     private PurchaseService purchaseService;
 
@@ -38,6 +36,12 @@ public class PurchaseController {
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = purchaseService.queryPage(params);
 
+        return R.ok().put("page", page);
+    }
+
+    @GetMapping("unreceive/list")
+    public R unreceiveList(@RequestParam Map<String, Object> params) {
+        PageUtils page =  purchaseService.queryUnreceiveList(params);
         return R.ok().put("page", page);
     }
 
@@ -53,14 +57,18 @@ public class PurchaseController {
         return R.ok().put("purchase", purchase);
     }
 
+    @PostMapping("/save")
+    public R save(@RequestBody PurchaseEntity purchaseEntity) {
+        purchaseService.save(purchaseEntity);
+        return R.ok();
+    }
+
     /**
      * 保存
      */
-    @RequestMapping("/save")
-    // @RequiresPermissions("ware:purchase:save")
-    public R save(@RequestBody PurchaseEntity purchase){
-		purchaseService.save(purchase);
-
+    @PostMapping("/merge")
+    public R megre(@RequestBody MergeVo mergeVo) {
+        purchaseService.saveMegre(mergeVo);
         return R.ok();
     }
 
@@ -68,10 +76,20 @@ public class PurchaseController {
      * 修改
      */
     @RequestMapping("/update")
-    // @RequiresPermissions("ware:purchase:update")
     public R update(@RequestBody PurchaseEntity purchase){
-		purchaseService.updateById(purchase);
+		purchaseService.updateDetail(purchase);
+        return R.ok();
+    }
 
+    @PostMapping("/received")
+    public R received(@RequestBody List<Long> purchaseIds) {
+        purchaseService.received(purchaseIds);
+        return R.ok();
+    }
+
+    @PostMapping("/done")
+    public R done(@RequestBody PurchaseReqVo purchaseReqVo) {
+        purchaseService.done(purchaseReqVo);
         return R.ok();
     }
 

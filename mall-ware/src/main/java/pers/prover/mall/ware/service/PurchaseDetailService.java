@@ -3,7 +3,9 @@ package pers.prover.mall.ware.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import pers.prover.mall.common.utils.PageUtils;
 import pers.prover.mall.ware.entity.PurchaseDetailEntity;
+import pers.prover.mall.ware.vo.PurchaseReqVo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +18,13 @@ import java.util.Map;
 public interface PurchaseDetailService extends IService<PurchaseDetailEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    void updateDetail(Long id, Integer status);
+
+    /**
+     * 修改采购需求详情状态
+     * @param getPurchaseDetailReqVos
+     */
+    void done(List<PurchaseReqVo.PurchaseDetailReqVo> getPurchaseDetailReqVos);
 }
 

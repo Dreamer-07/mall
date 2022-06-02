@@ -1,5 +1,6 @@
 package pers.prover.mall.ware.dao;
 
+import org.apache.ibatis.annotations.Param;
 import pers.prover.mall.ware.entity.PurchaseDetailEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
@@ -13,5 +14,6 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface PurchaseDetailDao extends BaseMapper<PurchaseDetailEntity> {
-	
+
+    void updateStatus(@Param("purchaseId") Long id, @Param("status") Integer status);
 }

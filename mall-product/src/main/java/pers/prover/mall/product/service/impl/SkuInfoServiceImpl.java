@@ -61,6 +61,11 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
         return skuInfoEntity.getSkuId();
     }
 
+    @Override
+    public String getSkuName(Long skuId) {
+        return this.getById(skuId).getSkuName();
+    }
+
     private Long strCovertLong(String str) {
         if (StringUtils.isBlank(str)) {
             return 0L;

@@ -1,4 +1,4 @@
-package pers.prover.mall.ware.controller;
+package pers.prover.mall.ware.controller.admin;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -10,34 +10,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import pers.prover.mall.ware.entity.WareSkuEntity;
-import pers.prover.mall.ware.service.WareSkuService;
+import pers.prover.mall.ware.entity.PurchaseDetailEntity;
+import pers.prover.mall.ware.service.PurchaseDetailService;
 import pers.prover.mall.common.utils.PageUtils;
 import pers.prover.mall.common.utils.R;
 
 
 
 /**
- * 商品库存
+ * 
  *
  * @author 小·木曾仪仲·哈牛柚子露·蛋卷
  * @email 2391105059@qq.com
  * @date 2022-05-29 15:30:45
  */
 @RestController
-@RequestMapping("ware/waresku")
-public class WareSkuController {
+@RequestMapping("admin/ware/purchasedetail")
+public class PurchaseDetailAdminController {
     @Autowired
-    private WareSkuService wareSkuService;
+    private PurchaseDetailService purchaseDetailService;
 
     /**
      * 列表
      */
     @RequestMapping("/list")
-    // @RequiresPermissions("ware:waresku:list")
+    // @RequiresPermissions("ware:purchasedetail:list")
     public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = wareSkuService.queryPage(params);
-
+        PageUtils page = purchaseDetailService.queryPage(params);
         return R.ok().put("page", page);
     }
 
@@ -46,20 +45,20 @@ public class WareSkuController {
      * 信息
      */
     @RequestMapping("/info/{id}")
-    // @RequiresPermissions("ware:waresku:info")
+    // @RequiresPermissions("ware:purchasedetail:info")
     public R info(@PathVariable("id") Long id){
-		WareSkuEntity wareSku = wareSkuService.getById(id);
+		PurchaseDetailEntity purchaseDetail = purchaseDetailService.getById(id);
 
-        return R.ok().put("wareSku", wareSku);
+        return R.ok().put("purchaseDetail", purchaseDetail);
     }
 
     /**
      * 保存
      */
     @RequestMapping("/save")
-    // @RequiresPermissions("ware:waresku:save")
-    public R save(@RequestBody WareSkuEntity wareSku){
-		wareSkuService.save(wareSku);
+    // @RequiresPermissions("ware:purchasedetail:save")
+    public R save(@RequestBody PurchaseDetailEntity purchaseDetail){
+		purchaseDetailService.save(purchaseDetail);
 
         return R.ok();
     }
@@ -68,9 +67,9 @@ public class WareSkuController {
      * 修改
      */
     @RequestMapping("/update")
-    // @RequiresPermissions("ware:waresku:update")
-    public R update(@RequestBody WareSkuEntity wareSku){
-		wareSkuService.updateById(wareSku);
+    // @RequiresPermissions("ware:purchasedetail:update")
+    public R update(@RequestBody PurchaseDetailEntity purchaseDetail){
+		purchaseDetailService.updateById(purchaseDetail);
 
         return R.ok();
     }
@@ -79,9 +78,9 @@ public class WareSkuController {
      * 删除
      */
     @RequestMapping("/delete")
-    // @RequiresPermissions("ware:waresku:delete")
+    // @RequiresPermissions("ware:purchasedetail:delete")
     public R delete(@RequestBody Long[] ids){
-		wareSkuService.removeByIds(Arrays.asList(ids));
+		purchaseDetailService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
     }

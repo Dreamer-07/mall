@@ -27,5 +27,12 @@ public interface SkuInfoService extends IService<SkuInfoEntity> {
      * @return
      */
     Long save(SpuSaveVo.Skus sku, SpuInfoEntity spuInfoEntity, String defaultImg);
+
+    /**
+     * 获取 sku 名称
+     * @param skuId
+     * @return
+     */
+    String getSkuName(Long skuId);
 }
 
