@@ -3,16 +3,20 @@ package pers.prover.mall.product.controller.admin;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import com.sun.org.apache.bcel.internal.generic.RETURN;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import pers.prover.mall.product.entity.BrandEntity;
 import pers.prover.mall.product.entity.CategoryBrandRelationEntity;
 import pers.prover.mall.product.entity.CategoryEntity;
 import pers.prover.mall.product.service.CategoryBrandRelationService;
 import pers.prover.mall.common.utils.PageUtils;
 import pers.prover.mall.common.utils.R;
-
+import pers.prover.mall.product.vo.BrandRespVo;
 
 
 /**
@@ -55,6 +59,24 @@ public class CategoryBrandRelationAdminController {
     public R getCatelogByBrandId(@PathVariable Long brandId) {
         List<CategoryBrandRelationEntity> categoryBrandRelationEntities = categoryBrandRelationService.getCatelogByBrandId(brandId);
         return R.ok().put("data", categoryBrandRelationEntities);
+    }
+
+    @GetMapping("/brands/list")
+    public R getBrandListByCatelogId(@RequestParam Long catId) {
+        List<BrandEntity> brandEntities = categoryBrandRelationService.getBrandListByCatelogId(catId);
+
+        List<BrandRespVo> brandList = null;
+
+        if (brandEntities != null && brandEntities.size() > 0) {
+            brandList = brandEntities.stream().map(brandEntity -> {
+                BrandRespVo brandRespVo = new BrandRespVo();
+                brandRespVo.setBrandId(brandEntity.getBrandId());
+                brandRespVo.setBrandName(brandEntity.getName());
+                return brandRespVo;
+            }).collect(Collectors.toList());
+        }
+
+        return R.ok().put("data", brandList);
     }
 
     /**

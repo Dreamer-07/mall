@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -69,7 +71,7 @@ public class AttrAttrgroupRelationServiceImpl extends ServiceImpl<AttrAttrgroupR
     }
 
     @Override
-    public void saveBatch(List<AttrAttrgroupRelationReqVo> attrAttrgroupRelationReqVos){
+    public void saveBatch(List<AttrAttrgroupRelationReqVo> attrAttrgroupRelationReqVos) {
         List<AttrAttrgroupRelationEntity> attrAttrgroupRelationEntities = attrAttrgroupRelationReqVos.stream().map(attrAttrgroupRelationReqVo -> {
             AttrAttrgroupRelationEntity attrAttrgroupRelationEntity = new AttrAttrgroupRelationEntity();
             BeanUtils.copyProperties(attrAttrgroupRelationReqVo, attrAttrgroupRelationEntity);
@@ -77,6 +79,16 @@ public class AttrAttrgroupRelationServiceImpl extends ServiceImpl<AttrAttrgroupR
             return attrAttrgroupRelationEntity;
         }).collect(Collectors.toList());
         this.saveBatch(attrAttrgroupRelationEntities);
+    }
+
+    @Override
+    public List<Long> getAttrIds(Long attrGroupId) {
+        LambdaQueryWrapper<AttrAttrgroupRelationEntity> lqw = new LambdaQueryWrapper<AttrAttrgroupRelationEntity>()
+                .select(AttrAttrgroupRelationEntity::getAttrId)
+                .eq(AttrAttrgroupRelationEntity::getAttrGroupId, attrGroupId);
+        return this.list(lqw).stream()
+                .map(AttrAttrgroupRelationEntity::getAttrId)
+                .collect(Collectors.toList());
     }
 
 }

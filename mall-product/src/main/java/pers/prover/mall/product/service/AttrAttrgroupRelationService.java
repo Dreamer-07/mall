@@ -52,5 +52,12 @@ public interface AttrAttrgroupRelationService extends IService<AttrAttrgroupRela
      * @param attrAttrgroupRelationReqVos
      */
     void saveBatch(List<AttrAttrgroupRelationReqVo> attrAttrgroupRelationReqVos);
+
+    /**
+     * 获取被关联的属性
+     * @param attrGroupId
+     * @return
+     */
+    List<Long> getAttrIds(Long attrGroupId);
 }
 

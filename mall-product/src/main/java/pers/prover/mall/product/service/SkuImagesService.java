@@ -3,7 +3,9 @@ package pers.prover.mall.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import pers.prover.mall.common.utils.PageUtils;
 import pers.prover.mall.product.entity.SkuImagesEntity;
+import pers.prover.mall.product.vo.SpuSaveVo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +18,7 @@ import java.util.Map;
 public interface SkuImagesService extends IService<SkuImagesEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    void save(Long skuId, List<SpuSaveVo.Skus.Images> images);
 }
 

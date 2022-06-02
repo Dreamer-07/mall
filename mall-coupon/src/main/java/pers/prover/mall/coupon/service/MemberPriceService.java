@@ -1,9 +1,11 @@
 package pers.prover.mall.coupon.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import pers.prover.mall.common.to.SkuReductionTo;
 import pers.prover.mall.common.utils.PageUtils;
 import pers.prover.mall.coupon.entity.MemberPriceEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +18,7 @@ import java.util.Map;
 public interface MemberPriceService extends IService<MemberPriceEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    void save(Long skuId, List<SkuReductionTo.MemberPrice> memberPrice);
 }
 

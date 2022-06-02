@@ -5,11 +5,14 @@ import org.springframework.web.bind.annotation.*;
 import pers.prover.mall.common.utils.PageUtils;
 import pers.prover.mall.common.utils.R;
 import pers.prover.mall.product.entity.AttrEntity;
+import pers.prover.mall.product.entity.ProductAttrValueEntity;
 import pers.prover.mall.product.service.AttrService;
+import pers.prover.mall.product.vo.Attr;
 import pers.prover.mall.product.vo.AttrReqVo;
 import pers.prover.mall.product.vo.AttrRespVo;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
@@ -33,6 +36,20 @@ public class AttrController {
     // @RequiresPermissions("product:attr:list")
     public R queryBaseList(@RequestParam Map<String, Object> params, @PathVariable Long catelogId){
         PageUtils page = attrService.queryBaseListPage(params, catelogId);
+
+        return R.ok().put("page", page);
+    }
+
+    @GetMapping("/base/listforspu/{spuId}")
+    public R getBaseListBySpuId(@PathVariable("spuId") Long spuId) {
+        List<ProductAttrValueEntity> productAttrValueEntityList = attrService.getBaseListBySpuId(spuId);
+        return R.ok().put("data", productAttrValueEntityList);
+    }
+
+    @RequestMapping("/sale/list/{catelogId}")
+    // @RequiresPermissions("product:attr:list")
+    public R querySaleList(@RequestParam Map<String, Object> params, @PathVariable Long catelogId){
+        PageUtils page = attrService.querySaleListPage(params, catelogId);
 
         return R.ok().put("page", page);
     }
@@ -68,6 +85,12 @@ public class AttrController {
     public R update(@RequestBody AttrReqVo attrReqVo){
 		attrService.updateById(attrReqVo);
 
+        return R.ok();
+    }
+
+    @PostMapping("/update/{spuId}")
+    public R updateBaseAttr(@PathVariable Long spuId, @RequestBody List<ProductAttrValueEntity> productAttrValueEntityList) {
+        attrService.updateBaseAttr(spuId, productAttrValueEntityList);
         return R.ok();
     }
 

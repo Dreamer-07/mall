@@ -19,6 +19,16 @@ spring:
           order: 1
           predicates:
             - Path=/*/product/**
+        - id: member_route
+          uri: lb://mall-member
+          order: 1
+          predicates:
+            - Path=/*/member/**
+        - id: coupon_route
+          uri: lb://mall-coupon
+          order: 1
+          predicates:
+            - Path=/*/coupon/**
         - id: thirdparty_route
           uri: lb://mall-thirdparty
           order: 1

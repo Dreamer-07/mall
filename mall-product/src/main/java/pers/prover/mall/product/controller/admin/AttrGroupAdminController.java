@@ -9,12 +9,14 @@ import org.springframework.web.bind.annotation.*;
 
 import pers.prover.mall.product.entity.AttrEntity;
 import pers.prover.mall.product.entity.AttrGroupEntity;
+import pers.prover.mall.product.entity.CategoryEntity;
 import pers.prover.mall.product.service.AttrAttrgroupRelationService;
 import pers.prover.mall.product.service.AttrGroupService;
 import pers.prover.mall.common.utils.PageUtils;
 import pers.prover.mall.common.utils.R;
 import pers.prover.mall.product.service.CategoryService;
 import pers.prover.mall.product.vo.AttrAttrgroupRelationReqVo;
+import pers.prover.mall.product.vo.AttrGroupRespVo;
 
 
 /**
@@ -31,6 +33,13 @@ public class AttrGroupAdminController {
     private AttrGroupService attrGroupService;
     @Autowired
     private CategoryService categoryService;
+
+    /*
+    * 1. 获取会员等级
+    * 2. 获取分类关联的品牌
+    * 3. 获取分类的所有规格参数分组以及相关的规格参数
+    *
+    * */
 
     /**
      * 列表
@@ -74,6 +83,12 @@ public class AttrGroupAdminController {
     public R getAttrGroupNoRelationAttr(@RequestParam Map<String, Object> params, @PathVariable String attrGroupId) {
         PageUtils page = attrGroupService.getAttrGroupNoRelationAttr(params, attrGroupId);
         return R.ok().put("page", page);
+    }
+
+    @GetMapping("{catlogId}/withattr")
+    public R getAttrGroupWithAttrByCatlogId(@PathVariable Long catlogId) {
+        List<AttrGroupRespVo> attrGroupWithAttrList = attrGroupService.getAttrGroupWithAttrByCatlogId(catlogId);
+        return R.ok().put("data", attrGroupWithAttrList);
     }
 
     /**

@@ -2,6 +2,7 @@ package pers.prover.mall.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import pers.prover.mall.common.utils.PageUtils;
+import pers.prover.mall.product.entity.BrandEntity;
 import pers.prover.mall.product.entity.CategoryBrandRelationEntity;
 
 import java.util.List;
@@ -44,5 +45,12 @@ public interface CategoryBrandRelationService extends IService<CategoryBrandRela
      * @param categoryName
      */
     void updateCategoryName(Long catId, String categoryName);
+
+    /**
+     * 获取分类关联的品牌
+     * @param catId
+     * @return
+     */
+    List<BrandEntity> getBrandListByCatelogId(Long catId);
 }
 

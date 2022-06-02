@@ -5,6 +5,7 @@ import pers.prover.mall.common.utils.PageUtils;
 import pers.prover.mall.product.entity.AttrEntity;
 import pers.prover.mall.product.entity.AttrGroupEntity;
 import pers.prover.mall.product.vo.AttrAttrgroupRelationReqVo;
+import pers.prover.mall.product.vo.AttrGroupRespVo;
 
 import java.util.List;
 import java.util.Map;
@@ -67,5 +68,12 @@ public interface AttrGroupService extends IService<AttrGroupEntity> {
      * @param attrAttrgroupRelationReqVos
      */
     void removeBatch(List<AttrAttrgroupRelationReqVo> attrAttrgroupRelationReqVos);
+
+    /**
+     * 根据 catlog 获取对应的 attrGroup 和 attr
+     * @param catlogId
+     * @return
+     */
+    List<AttrGroupRespVo> getAttrGroupWithAttrByCatlogId(Long catlogId);
 }
 

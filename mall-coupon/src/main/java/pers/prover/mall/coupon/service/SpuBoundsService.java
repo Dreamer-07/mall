@@ -1,6 +1,7 @@
 package pers.prover.mall.coupon.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import pers.prover.mall.common.to.SpuBoundTo;
 import pers.prover.mall.common.utils.PageUtils;
 import pers.prover.mall.coupon.entity.SpuBoundsEntity;
 
@@ -16,5 +17,7 @@ import java.util.Map;
 public interface SpuBoundsService extends IService<SpuBoundsEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    void save(SpuBoundTo spuBoundTo);
 }
 

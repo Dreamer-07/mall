@@ -3,7 +3,9 @@ package pers.prover.mall.product.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,6 +29,8 @@ import pers.prover.mall.product.service.AttrAttrgroupRelationService;
 import pers.prover.mall.product.service.AttrGroupService;
 import pers.prover.mall.product.service.AttrService;
 import pers.prover.mall.product.vo.AttrAttrgroupRelationReqVo;
+import pers.prover.mall.product.vo.AttrGroupRespVo;
+import pers.prover.mall.product.vo.AttrRespVo;
 
 
 @Service("attrGroupService")
@@ -127,6 +131,37 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
     @Override
     public void removeBatch(List<AttrAttrgroupRelationReqVo> attrAttrgroupRelationReqVos) {
         this.baseMapper.deleteBatch(attrAttrgroupRelationReqVos);
+    }
+
+    @Override
+    public List<AttrGroupRespVo> getAttrGroupWithAttrByCatlogId(Long catlogId) {
+        // 获取属性分组信息
+        LambdaQueryWrapper<AttrGroupEntity> selectAttrGroupLqw = new LambdaQueryWrapper<AttrGroupEntity>()
+                .eq(AttrGroupEntity::getCatelogId, catlogId);
+        List<AttrGroupEntity> attrGroupEntities = this.list(selectAttrGroupLqw);
+
+        if (attrGroupEntities != null && attrGroupEntities.size() > 0) {
+            return attrGroupEntities.stream().map(attrGroupEntity -> {
+                AttrGroupRespVo attrGroupRespVo = new AttrGroupRespVo();
+                BeanUtils.copyProperties(attrGroupEntity, attrGroupRespVo);
+
+                // 查找关联属性
+                List<Long> attrIds = attrAttrgroupRelationService.getAttrIds(attrGroupEntity.getAttrGroupId());
+
+                if (attrIds.size() > 0) {
+                    List<AttrEntity> attrEntities = attrService.listByIds(attrIds);
+                    attrGroupRespVo.setAttrs(attrEntities.stream().map(attrEntity -> {
+                        AttrRespVo attrRespVo = new AttrRespVo();
+                        BeanUtils.copyProperties(attrEntity, attrRespVo);
+                        return attrRespVo;
+                    }).collect(Collectors.toList()));
+                }
+
+                return attrGroupRespVo;
+            }).collect(Collectors.toList());
+        }
+
+        return null;
     }
 
 }

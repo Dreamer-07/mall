@@ -3,6 +3,8 @@ package pers.prover.mall.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import pers.prover.mall.common.utils.PageUtils;
 import pers.prover.mall.product.entity.SkuInfoEntity;
+import pers.prover.mall.product.entity.SpuInfoEntity;
+import pers.prover.mall.product.vo.SpuSaveVo;
 
 import java.util.Map;
 
@@ -16,5 +18,14 @@ import java.util.Map;
 public interface SkuInfoService extends IService<SkuInfoEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    /**
+     * 保存 sku 信息
+     * @param sku
+     * @param spuInfoEntity
+     * @param defaultImg
+     * @return
+     */
+    Long save(SpuSaveVo.Skus sku, SpuInfoEntity spuInfoEntity, String defaultImg);
 }
 

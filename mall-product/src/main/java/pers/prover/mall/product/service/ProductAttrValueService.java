@@ -3,7 +3,9 @@ package pers.prover.mall.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import pers.prover.mall.common.utils.PageUtils;
 import pers.prover.mall.product.entity.ProductAttrValueEntity;
+import pers.prover.mall.product.vo.SpuSaveVo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +18,11 @@ import java.util.Map;
 public interface ProductAttrValueService extends IService<ProductAttrValueEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    void save(Long spuInfoId, List<SpuSaveVo.BaseAttrs> baseAttrs);
+
+    List<ProductAttrValueEntity> getBySpuId(Long spuId);
+
+    void updateAttr(Long spuId, List<ProductAttrValueEntity> productAttrValueEntityList);
 }
 

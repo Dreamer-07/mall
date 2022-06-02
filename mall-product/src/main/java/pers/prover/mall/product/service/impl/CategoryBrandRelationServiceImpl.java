@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -14,6 +15,7 @@ import pers.prover.mall.common.utils.PageUtils;
 import pers.prover.mall.common.utils.Query;
 
 import pers.prover.mall.product.dao.CategoryBrandRelationDao;
+import pers.prover.mall.product.entity.BrandEntity;
 import pers.prover.mall.product.entity.CategoryBrandRelationEntity;
 import pers.prover.mall.product.service.BrandService;
 import pers.prover.mall.product.service.CategoryBrandRelationService;
@@ -63,6 +65,26 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
     @Override
     public void updateCategoryName(Long catId, String categoryName) {
         this.baseMapper.updateCategoryName(catId, categoryName);
+    }
+
+    @Override
+    public List<BrandEntity> getBrandListByCatelogId(Long catId) {
+        List<BrandEntity> brandEntities = null;
+
+        // 获取关联信息
+        LambdaQueryWrapper<CategoryBrandRelationEntity> selectBrandIdsLqw = new LambdaQueryWrapper<CategoryBrandRelationEntity>()
+                .select(CategoryBrandRelationEntity::getBrandId)
+                .eq(CategoryBrandRelationEntity::getCatelogId, catId);
+        List<CategoryBrandRelationEntity> categoryBrandRelationEntities = this.list(selectBrandIdsLqw);
+
+        if (categoryBrandRelationEntities != null && categoryBrandRelationEntities.size() > 0) {
+            // 获取 brandIds
+            List<Long> brandIds = categoryBrandRelationEntities.stream().map(CategoryBrandRelationEntity::getBrandId).collect(Collectors.toList());
+            // 根据 brandid 获取 brand info
+            brandEntities = brandService.listByIds(brandIds);
+        }
+
+        return brandEntities;
     }
 
 }

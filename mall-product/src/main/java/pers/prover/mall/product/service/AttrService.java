@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import pers.prover.mall.common.utils.PageUtils;
 import pers.prover.mall.product.entity.AttrEntity;
+import pers.prover.mall.product.entity.AttrGroupEntity;
+import pers.prover.mall.product.entity.ProductAttrValueEntity;
+import pers.prover.mall.product.vo.Attr;
 import pers.prover.mall.product.vo.AttrReqVo;
 import pers.prover.mall.product.vo.AttrRespVo;
 
@@ -55,5 +58,26 @@ public interface AttrService extends IService<AttrEntity> {
      * @return
      */
     PageUtils pageByNotInIds(Map<String, Object> params, List<Long> attrIds, Long catelogId);
+
+    /**
+     * 查找销售属性列表分页
+     * @param params
+     * @return
+     */
+    PageUtils querySaleListPage(Map<String, Object> params, Long catelogId);
+
+    /**
+     * 查找 spu 的规格参数
+     * @param spuId
+     * @return
+     */
+    List<ProductAttrValueEntity> getBaseListBySpuId(Long spuId);
+
+    /**
+     * 根据 spuId 修改对应的销售属性
+     * @param spuId
+     * @param productAttrValueEntityList
+     */
+    void updateBaseAttr(Long spuId, List<ProductAttrValueEntity> productAttrValueEntityList);
 }
 
