@@ -6,6 +6,7 @@ import pers.prover.mall.product.entity.SkuInfoEntity;
 import pers.prover.mall.product.entity.SpuInfoEntity;
 import pers.prover.mall.product.vo.SpuSaveVo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,5 +35,12 @@ public interface SkuInfoService extends IService<SkuInfoEntity> {
      * @return
      */
     String getSkuName(Long skuId);
+
+    /**
+     * 根据 spu 获取对应的 skuInfo
+     * @param spuId
+     * @return
+     */
+    List<SkuInfoEntity> listBySpuId(Long spuId);
 }
 

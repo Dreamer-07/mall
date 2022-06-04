@@ -10,6 +10,7 @@ import pers.prover.mall.product.vo.Attr;
 import pers.prover.mall.product.vo.AttrReqVo;
 import pers.prover.mall.product.vo.AttrRespVo;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -79,5 +80,12 @@ public interface AttrService extends IService<AttrEntity> {
      * @param productAttrValueEntityList
      */
     void updateBaseAttr(Long spuId, List<ProductAttrValueEntity> productAttrValueEntityList);
+
+    /**
+     * 查找属性详情(且可以被检索)
+     * @param attrIds
+     * @return
+     */
+    List<AttrEntity> listByIdsAndSearchType(Collection<Long> attrIds);
 }
 

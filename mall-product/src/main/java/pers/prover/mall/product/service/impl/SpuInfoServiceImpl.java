@@ -1,28 +1,33 @@
 package pers.prover.mall.product.service.impl;
 
+import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
+import pers.prover.mall.common.constant.ProductConstant;
 import pers.prover.mall.common.to.SkuReductionTo;
 import pers.prover.mall.common.to.SpuBoundTo;
+import pers.prover.mall.common.to.es.ProductMapping;
 import pers.prover.mall.common.utils.PageUtils;
 import pers.prover.mall.common.utils.Query;
 
 import pers.prover.mall.common.utils.R;
 import pers.prover.mall.product.client.CouponFeignClient;
+import pers.prover.mall.product.client.SearchFeignClient;
+import pers.prover.mall.product.client.WareFeignClient;
 import pers.prover.mall.product.dao.SpuInfoDao;
 import pers.prover.mall.product.entity.AttrEntity;
+import pers.prover.mall.product.entity.ProductAttrValueEntity;
 import pers.prover.mall.product.entity.SkuInfoEntity;
 import pers.prover.mall.product.entity.SpuInfoEntity;
 import pers.prover.mall.product.service.*;
@@ -31,6 +36,15 @@ import pers.prover.mall.product.vo.SpuSaveVo;
 
 @Service("spuInfoService")
 public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> implements SpuInfoService {
+
+    @Autowired
+    private BrandService brandService;
+
+    @Autowired
+    private CategoryService categoryService;
+
+    @Autowired
+    private AttrService attrService;
 
     @Autowired
     private SpuInfoDescService spuInfoDescService;
@@ -52,6 +66,12 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
 
     @Autowired
     private CouponFeignClient couponFeignClient;
+
+    @Autowired
+    private SearchFeignClient searchFeignClient;
+
+    @Autowired
+    private WareFeignClient wareFeignClient;
 
     @Override
 
@@ -136,6 +156,64 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
                 throw new RuntimeException("保存sku积分信息失败");
             }
         });
+    }
+
+    @Override
+    public void productUp(Long spuId) {
+        // 1. 找出所有的 sku
+        List<SkuInfoEntity> skuInfoEntityList = skuInfoService.listBySpuId(spuId);
+
+        // 2. 封装成 es 存储模型
+        // 获取 spu 的规格参数 ==> key: attrId & value: attrEntity
+        Map<Long, ProductAttrValueEntity> productAttrValueMap = productAttrValueService.getBySpuId(spuId).stream()
+                .collect(Collectors.toMap(ProductAttrValueEntity::getAttrId, productAttrValueEntity -> productAttrValueEntity));
+        List<AttrEntity> attrEntityList = attrService.listByIdsAndSearchType(productAttrValueMap.keySet());
+        List<ProductMapping.Attr> attrs = attrEntityList.stream()
+                .map(attrEntity -> {
+                    ProductMapping.Attr attr = new ProductMapping.Attr();
+                    BeanUtils.copyProperties(attrEntity, attr);
+                    // 通过 attrId 获取对应的 spu规格参数属性值
+                    attr.setAttrValue(productAttrValueMap.get(attr.getAttrId()).getAttrValue());
+                    return attr;
+                })
+                .collect(Collectors.toList());
+
+        // 3. 通过 spu 获取 brandName & catalogName
+        String brandName = brandService.getBrandName(skuInfoEntityList.get(0).getBrandId());
+        String catelogName = categoryService.getCatelogName(skuInfoEntityList.get(0).getCatalogId());
+
+        // 4. 获取 sku 的库存信息
+        List<Long> skuIds = skuInfoEntityList.stream().map(SkuInfoEntity::getSkuId).collect(Collectors.toList());
+        R r = wareFeignClient.stockInfo(skuIds);
+        HashMap<Long, Boolean> stockInfo = r.getData(new TypeReference<HashMap<Long, Boolean>>() {
+        });
+
+        // 封装 skuInfo
+        List<ProductMapping> productMappings = skuInfoEntityList.stream().map(skuInfoEntity -> {
+            ProductMapping productMapping = new ProductMapping();
+            productMapping.setAttrs(attrs);
+            productMapping.setSpuId(spuId);
+            // TODO: 热度先设置为 0
+            productMapping.setHotScore(0L);
+            BeanUtils.copyProperties(skuInfoEntity, productMapping);
+            productMapping.setBrandImg(skuInfoEntity.getSkuDefaultImg());
+            productMapping.setSkuPrice(skuInfoEntity.getPrice());
+            productMapping.setBrandName(brandName);
+            productMapping.setCatalogName(catelogName);
+            productMapping.setHasStock(Optional.ofNullable(stockInfo.get(skuInfoEntity.getSkuId())).orElse(false));
+            return productMapping;
+        }).collect(Collectors.toList());
+
+        // 3. 修改 spu 状态
+        R productUpState = searchFeignClient.productUp(productMappings);
+        if (productUpState.getCode() != 0) {
+            throw new RuntimeException("商品上架是失败，请联系管理员或重试");
+        }
+        this.updateStatus(spuId, ProductConstant.StatusEnum.SPU_UP.getCode());
+    }
+
+    private void updateStatus(Long spuId, int code) {
+        this.baseMapper.updateStatus(spuId, code);
     }
 
     private Long strCovertLong(String str) {

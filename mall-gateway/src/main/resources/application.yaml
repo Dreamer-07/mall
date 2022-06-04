@@ -34,6 +34,11 @@ spring:
           order: 1
           predicates:
             - Path=/*/ware/**
+        - id: search_route
+          uri: lb://mall-search
+          order: 1
+          predicates:
+            - Path=/*/search/**
         - id: thirdparty_route
           uri: lb://mall-thirdparty
           order: 1

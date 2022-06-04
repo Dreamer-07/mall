@@ -2,15 +2,13 @@ package pers.prover.mall.ware.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import pers.prover.mall.common.utils.PageUtils;
@@ -72,6 +70,14 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
                 this.updateById(wareSkuEntity);
             }
         }
+    }
+
+    @Override
+    public Map<Long, Boolean> listStockInfo(List<Long> skuIds) {
+        return this.baseMapper.listStockInfo(skuIds).stream()
+                .collect(Collectors.toMap(
+                        WareSkuEntity::getSkuId,
+                        wareSkuEntity -> wareSkuEntity.getStock() != null && wareSkuEntity.getStock() > 0));
     }
 
 }

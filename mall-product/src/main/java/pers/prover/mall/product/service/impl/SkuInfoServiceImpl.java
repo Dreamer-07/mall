@@ -5,6 +5,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -64,6 +65,13 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
     @Override
     public String getSkuName(Long skuId) {
         return this.getById(skuId).getSkuName();
+    }
+
+    @Override
+    public List<SkuInfoEntity> listBySpuId(Long spuId) {
+        LambdaQueryWrapper<SkuInfoEntity> selectLqw = new LambdaQueryWrapper<>();
+        selectLqw.eq(SkuInfoEntity::getSpuId, spuId);
+        return this.list(selectLqw);
     }
 
     private Long strCovertLong(String str) {

@@ -1,19 +1,15 @@
 package pers.prover.mall.ware.controller.admin;
 
-import java.util.Arrays;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import pers.prover.mall.ware.entity.WareSkuEntity;
-import pers.prover.mall.ware.service.WareSkuService;
+import org.springframework.web.bind.annotation.*;
 import pers.prover.mall.common.utils.PageUtils;
 import pers.prover.mall.common.utils.R;
+import pers.prover.mall.ware.entity.WareSkuEntity;
+import pers.prover.mall.ware.service.WareSkuService;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 
 
@@ -39,6 +35,12 @@ public class WareSkuAdminController {
         PageUtils page = wareSkuService.queryPage(params);
 
         return R.ok().put("page", page);
+    }
+
+    @PostMapping("/inner/stock")
+    public R stockInfo(@RequestBody List<Long> skuIds) {
+        Map<Long, Boolean> stockInfo = wareSkuService.listStockInfo(skuIds);
+        return R.ok().put("data", stockInfo);
     }
 
 

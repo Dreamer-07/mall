@@ -22,5 +22,12 @@ public interface BrandService extends IService<BrandEntity> {
      * @param brand
      */
     void updateCascade(BrandEntity brand);
+
+    /**
+     * 获取品牌名
+     * @param brandId
+     * @return
+     */
+    String getBrandName(Long brandId);
 }
 

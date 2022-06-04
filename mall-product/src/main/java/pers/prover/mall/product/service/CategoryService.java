@@ -49,5 +49,12 @@ public interface CategoryService extends IService<CategoryEntity> {
      * @return
      */
     String getCatelogPathStr(Long catelogId);
+
+    /**
+     * 获取分类名
+     * @param catalogId
+     * @return
+     */
+    String getCatelogName(Long catalogId);
 }
 

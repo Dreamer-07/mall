@@ -1,5 +1,6 @@
 package pers.prover.mall.product.dao;
 
+import org.apache.ibatis.annotations.Param;
 import pers.prover.mall.product.entity.SpuInfoEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
@@ -13,5 +14,6 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface SpuInfoDao extends BaseMapper<SpuInfoEntity> {
-	
+
+    void updateStatus(@Param("spuId") Long spuId,@Param("code") int code);
 }

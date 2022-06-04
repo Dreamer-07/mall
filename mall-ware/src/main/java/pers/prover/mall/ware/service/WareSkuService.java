@@ -20,5 +20,12 @@ public interface WareSkuService extends IService<WareSkuEntity> {
     PageUtils queryPage(Map<String, Object> params);
 
     void done(List<PurchaseDetailEntity> purchaseDetailEntities);
+
+    /**
+     * 获取 skuids 中分别对应的库存信息
+     * @param skuIds
+     * @return
+     */
+    Map<Long, Boolean> listStockInfo(List<Long> skuIds);
 }
 

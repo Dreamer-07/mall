@@ -6,6 +6,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -187,6 +188,14 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
     @Override
     public void updateBaseAttr(Long spuId, List<ProductAttrValueEntity> productAttrValueEntityList) {
         productAttrValueService.updateAttr(spuId, productAttrValueEntityList);
+    }
+
+    @Override
+    public List<AttrEntity> listByIdsAndSearchType(Collection<Long> attrIds) {
+        LambdaQueryWrapper<AttrEntity> selectLqw = new LambdaQueryWrapper<AttrEntity>()
+                .in(AttrEntity::getAttrId, attrIds)
+                .eq(AttrEntity::getSearchType, 1);
+        return this.list(selectLqw);
     }
 
 

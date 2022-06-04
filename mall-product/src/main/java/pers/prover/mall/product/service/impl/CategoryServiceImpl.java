@@ -1,5 +1,6 @@
 package pers.prover.mall.product.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,6 +72,14 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         List<String> categoryPath = new ArrayList<>();
         getCategoryParentPathStr(categoryEntity, categoryPath);
         return String.join( "/", categoryPath);
+    }
+
+    @Override
+    public String getCatelogName(Long catalogId) {
+        LambdaQueryWrapper<CategoryEntity> selectLqw = new LambdaQueryWrapper<CategoryEntity>()
+                .select(CategoryEntity::getName)
+                .eq(CategoryEntity::getCatId, catalogId);
+        return this.getOne(selectLqw).getName();
     }
 
     /**

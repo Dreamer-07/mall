@@ -9,6 +9,9 @@
 package pers.prover.mall.common.utils;
 
 import ch.qos.logback.core.status.ErrorStatus;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import org.apache.http.HttpStatus;
 import pers.prover.mall.common.enums.ErrorCodeEnum;
 
@@ -22,6 +25,17 @@ import java.util.Map;
  */
 public class R extends HashMap<String, Object> {
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 将 data 转换成指定的 typeReference 类型的数据并返回
+	 * @param typeReference
+	 * @param <T>
+	 * @return
+	 */
+	public <T> T getData(TypeReference<T> typeReference) {
+		Object data = this.get("data");
+		return JSON.parseObject(JSON.toJSONString(data), typeReference);
+	}
 	
 	public R() {
 		put("code", 0);

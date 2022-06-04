@@ -1,5 +1,6 @@
 package pers.prover.mall.product.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,14 @@ public class BrandServiceImpl extends ServiceImpl<BrandDao, BrandEntity> impleme
             categoryBrandRelationService.updateBrandName(brand.getBrandId(), brand.getName());
         }
         this.updateById(brand);
+    }
+
+    @Override
+    public String getBrandName(Long brandId) {
+        LambdaQueryWrapper<BrandEntity> selectLqw = new LambdaQueryWrapper<BrandEntity>()
+                .select(BrandEntity::getName)
+                .eq(BrandEntity::getBrandId, brandId);
+        return this.getOne(selectLqw).getName();
     }
 
 }

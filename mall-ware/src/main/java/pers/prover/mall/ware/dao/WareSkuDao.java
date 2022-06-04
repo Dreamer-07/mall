@@ -1,8 +1,11 @@
 package pers.prover.mall.ware.dao;
 
+import org.apache.ibatis.annotations.Param;
 import pers.prover.mall.ware.entity.WareSkuEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * 商品库存
@@ -13,5 +16,6 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface WareSkuDao extends BaseMapper<WareSkuEntity> {
-	
+
+    List<WareSkuEntity> listStockInfo(@Param("skuIds") List<Long> skuIds);
 }
