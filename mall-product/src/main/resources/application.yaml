@@ -12,6 +12,13 @@ spring:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
+  redis:
+    host: 192.168.102.150
+  cache:
+    type: redis
+    redis:
+      # 指定redis中的过期时间为1h
+      time-to-live: 3600000
   thymeleaf:
     cache: true
   jackson:
