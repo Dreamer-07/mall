@@ -12,6 +12,8 @@ spring:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
+  thymeleaf:
+    cache: true
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
 mybatis-plus:
@@ -24,6 +26,3 @@ mybatis-plus:
       logic-delete-value: 1
       logic-not-delete-value: 0
   mapper-locations: classpath:/mapper/**/*.xml
-#ribbon:
-#  ConnectTimeout: 50000
-#  ReadTimeout: 50000

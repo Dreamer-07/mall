@@ -19,6 +19,11 @@ spring:
           order: 1
           predicates:
             - Path=/*/product/**
+        - id: product_prod_route
+          uri: lb://mall-product
+          order: 1
+          predicates:
+            - Host=mall.com,*.mall.com
         - id: member_route
           uri: lb://mall-member
           order: 1

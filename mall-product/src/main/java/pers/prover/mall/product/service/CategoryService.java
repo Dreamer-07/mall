@@ -3,6 +3,7 @@ package pers.prover.mall.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import pers.prover.mall.common.utils.PageUtils;
 import pers.prover.mall.product.entity.CategoryEntity;
+import pers.prover.mall.product.vo.api.CategoryLevel2RespVo;
 
 import java.util.List;
 import java.util.Map;
@@ -56,5 +57,18 @@ public interface CategoryService extends IService<CategoryEntity> {
      * @return
      */
     String getCatelogName(Long catalogId);
+
+    /**
+     * 根据 parentId 查找对应的分类
+     * @param parentId
+     * @return
+     */
+    List<CategoryEntity> listByParentId(Long parentId);
+
+    /**
+     * 根据 parentId 将 list 转换为 map 的结构并返回
+     * @return
+     */
+    Map<Long, List<CategoryLevel2RespVo>> listMapByParentId();
 }
 
