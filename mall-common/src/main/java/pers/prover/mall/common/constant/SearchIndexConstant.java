@@ -7,6 +7,6 @@ package pers.prover.mall.common.constant;
  */
 public class SearchIndexConstant {
 
-    public static final String PRODUCT = "product";
+    public static final String PRODUCT = "mall-product";
 
 }

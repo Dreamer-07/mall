@@ -1,10 +1,13 @@
 package pers.prover.mall.product.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import pers.prover.mall.common.utils.PageUtils;
 import pers.prover.mall.product.entity.BrandEntity;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 品牌
@@ -29,5 +32,18 @@ public interface BrandService extends IService<BrandEntity> {
      * @return
      */
     String getBrandName(Long brandId);
+
+    /**
+     * 获取对应的品牌名
+     *
+     * @param brandIds
+     * @return
+     */
+    default List<String> brandNameList(List<Long> brandIds) {
+        LambdaQueryWrapper<BrandEntity> selectLqw = new LambdaQueryWrapper<BrandEntity>()
+                .select(BrandEntity::getName)
+                .in(BrandEntity::getBrandId, brandIds);
+        return this.list(selectLqw).stream().map(BrandEntity::getName).collect(Collectors.toList());
+    }
 }
 
