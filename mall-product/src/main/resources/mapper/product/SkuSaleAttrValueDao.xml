@@ -12,6 +12,31 @@
         <result property="attrValue" column="attr_value"/>
         <result property="attrSort" column="attr_sort"/>
     </resultMap>
+    <resultMap id="spuSaleAttrVo" type="pers.prover.mall.product.vo.api.SkuItemVo$SpuSaleAttrVo">
+        <result property="attrId" column="attr_id"/>
+        <result property="attrName" column="attr_name"/>
+        <collection property="saleAttrValuesVoList" ofType="pers.prover.mall.product.vo.api.SkuItemVo$SpuSaleAttrVo$SaleAttrValuesVo">
+            <result property="attrValue" column="attr_value"/>
+            <result property="skuIds" column="skuIds"/>
+        </collection>
+    </resultMap>
+
+    <select id="saleAttrList" resultMap="spuSaleAttrVo">
+        SELECT
+            ssav.attr_id attr_id,
+            ssav.attr_name attr_name,
+            ssav.attr_value attr_value,
+            GROUP_CONCAT(DISTINCT ssav.sku_id) skuIds
+        FROM
+            pms_sku_sale_attr_value ssav
+                LEFT JOIN pms_sku_info si ON ssav.sku_id = si.sku_id
+        WHERE
+            spu_id = #{spuId}
+        GROUP BY
+            ssav.attr_id,
+            ssav.attr_name,
+            ssav.attr_value
+    </select>
 
 
 </mapper>

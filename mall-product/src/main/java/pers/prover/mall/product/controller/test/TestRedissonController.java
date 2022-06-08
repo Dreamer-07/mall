@@ -1,4 +1,4 @@
-package pers.prover.mall.product.controller.api;
+package pers.prover.mall.product.controller.test;
 
 import org.redisson.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/test")
-public class TestController {
+public class TestRedissonController {
 
     @Autowired
     private RedissonClient redissonClient;

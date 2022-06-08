@@ -19,6 +19,7 @@ import pers.prover.mall.product.entity.ProductAttrValueEntity;
 import pers.prover.mall.product.service.AttrService;
 import pers.prover.mall.product.service.ProductAttrValueService;
 import pers.prover.mall.product.vo.SpuSaveVo;
+import pers.prover.mall.product.vo.api.SkuItemVo;
 
 
 @Service("productAttrValueService")
@@ -74,6 +75,11 @@ public class ProductAttrValueServiceImpl extends ServiceImpl<ProductAttrValueDao
                 .collect(Collectors.toList());
 
         this.saveBatch(productAttrValueEntityList);
+    }
+
+    @Override
+    public List<SkuItemVo.SpuBaseAttrVo> baseAttrList(Long catalogId, Long spuId) {
+        return this.baseMapper.baseAttrList(catalogId, spuId);
     }
 
 }

@@ -1,5 +1,6 @@
 package pers.prover.mall.product.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Bean;
@@ -43,6 +44,11 @@ public class SkuImagesServiceImpl extends ServiceImpl<SkuImagesDao, SkuImagesEnt
             return skuImagesEntity;
         }).collect(Collectors.toList());
         this.saveBatch(skuImagesEntities);
+    }
+
+    @Override
+    public List<SkuImagesEntity> listBySkuId(Long skuId) {
+        return this.list(new LambdaQueryWrapper<SkuImagesEntity>().eq(SkuImagesEntity::getSkuId, skuId));
     }
 
 }

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import pers.prover.mall.common.utils.PageUtils;
 import pers.prover.mall.product.entity.SkuSaleAttrValueEntity;
 import pers.prover.mall.product.vo.SpuSaveVo;
+import pers.prover.mall.product.vo.api.SkuItemVo;
 
 import java.util.List;
 import java.util.Map;
@@ -20,5 +21,12 @@ public interface SkuSaleAttrValueService extends IService<SkuSaleAttrValueEntity
     PageUtils queryPage(Map<String, Object> params);
 
     void save(Long skuId, List<SpuSaveVo.Skus.Attr> attr);
+
+    /**
+     * 获取 spu 销售属性的组合
+     * @param spuId
+     * @return
+     */
+    List<SkuItemVo.SpuSaleAttrVo> saleAttrList(Long spuId);
 }
 

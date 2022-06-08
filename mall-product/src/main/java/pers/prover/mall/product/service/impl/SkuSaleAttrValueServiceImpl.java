@@ -15,6 +15,7 @@ import pers.prover.mall.product.dao.SkuSaleAttrValueDao;
 import pers.prover.mall.product.entity.SkuSaleAttrValueEntity;
 import pers.prover.mall.product.service.SkuSaleAttrValueService;
 import pers.prover.mall.product.vo.SpuSaveVo;
+import pers.prover.mall.product.vo.api.SkuItemVo;
 
 
 @Service("skuSaleAttrValueService")
@@ -38,6 +39,11 @@ public class SkuSaleAttrValueServiceImpl extends ServiceImpl<SkuSaleAttrValueDao
             skuSaleAttrValueEntity.setSkuId(skuId);
             this.save(skuSaleAttrValueEntity);
         });
+    }
+
+    @Override
+    public List<SkuItemVo.SpuSaleAttrVo> saleAttrList(Long spuId) {
+        return this.baseMapper.saleAttrList(spuId);
     }
 
 }

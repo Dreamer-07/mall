@@ -13,6 +13,31 @@
         <result property="attrSort" column="attr_sort"/>
         <result property="quickShow" column="quick_show"/>
     </resultMap>
+    <!-- 检索 spu 规格参数 -->
+    <resultMap id="spuBaseAttrVoMap" type="pers.prover.mall.product.vo.api.SkuItemVo$SpuBaseAttrVo">
+        <result property="groupName" column="group_name"/>
+        <collection property="baseAttrVoList" ofType="pers.prover.mall.product.vo.api.SkuItemVo$SpuBaseAttrVo$BaseAttrVo">
+            <result property="attrName" column="attr_name" />
+            <result property="attrValues" column="attr_values" />
+        </collection>
+    </resultMap>
+    <select id="baseAttrList" resultMap="spuBaseAttrVoMap">
+        SELECT
+            ag.attr_group_name group_name,
+            a.attr_name attr_name,
+            GROUP_CONCAT( DISTINCT pav.attr_value ) attr_values
+        FROM
+            pms_attr_group ag
+                LEFT JOIN pms_attr_attrgroup_relation agr ON agr.attr_group_id = ag.attr_group_id
+                LEFT JOIN pms_attr a ON agr.attr_id = a.attr_id
+                LEFT JOIN pms_product_attr_value pav ON pav.attr_id = a.attr_id
+        WHERE
+            ag.catelog_id = #{catalogId}
+          AND pav.spu_id = #{spuId}
+        GROUP BY
+            ag.attr_group_name,
+            a.attr_name
+    </select>
 
 
 </mapper>

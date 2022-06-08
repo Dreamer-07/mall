@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import pers.prover.mall.common.utils.PageUtils;
 import pers.prover.mall.product.entity.ProductAttrValueEntity;
 import pers.prover.mall.product.vo.SpuSaveVo;
+import pers.prover.mall.product.vo.api.SkuItemVo;
 
 import java.util.List;
 import java.util.Map;
@@ -25,5 +26,6 @@ public interface ProductAttrValueService extends IService<ProductAttrValueEntity
 
     void updateAttr(Long spuId, List<ProductAttrValueEntity> productAttrValueEntityList);
 
+    List<SkuItemVo.SpuBaseAttrVo> baseAttrList(Long catalogId, Long spuId);
 }
 
