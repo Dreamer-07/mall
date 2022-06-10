@@ -26,7 +26,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/admin/thirdparty/oss")
-public class OssController {
+public class AliOssController {
 
     @Resource
     private OSSClient ossClient;

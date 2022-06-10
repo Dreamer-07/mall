@@ -7,7 +7,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.session.web.http.CookieSerializer;
+import org.springframework.session.web.http.DefaultCookieSerializer;
 
 
 /**
@@ -29,6 +32,25 @@ public class CacheConfig {
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericFastJsonRedisSerializer()))
                 // 使用配置文件中设置的 ttl 值
                 .entryTtl(cacheProperties.getRedis().getTimeToLive());
+    }
+
+    /**
+     * spring session redis 序列化
+     * @return
+     */
+    @Bean
+    public RedisSerializer<Object> springSessionDefaultRedisSerializer() {
+        return new GenericFastJsonRedisSerializer();
+    }
+
+    @Bean
+    public CookieSerializer cookieSerializer() {
+        DefaultCookieSerializer defaultCookieSerializer = new DefaultCookieSerializer();
+        // 设置 cookie 的名字
+        defaultCookieSerializer.setCookieName("MALL_SESSION_ID");
+        // 设置 cookie 的作用域
+        defaultCookieSerializer.setDomainName("mall.com");
+        return defaultCookieSerializer;
     }
 
 }

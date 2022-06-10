@@ -45,6 +45,10 @@ public class MemberEntity implements Serializable {
 	 */
 	private String mobile;
 	/**
+	 * 用户绑定的微博账号标识
+	 */
+	private String weiboId;
+	/**
 	 * 邮箱
 	 */
 	private String email;

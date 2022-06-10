@@ -6,11 +6,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
+import pers.prover.mall.common.constant.AuthConstant;
+import pers.prover.mall.common.constant.RedisKeyConstant;
 import pers.prover.mall.product.entity.CategoryEntity;
 import pers.prover.mall.product.service.CategoryService;
 import pers.prover.mall.product.service.SkuInfoService;
 import pers.prover.mall.product.vo.api.SkuItemVo;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -28,9 +31,10 @@ public class RouteController {
     private SkuInfoService skuInfoService;
 
     @GetMapping({"/", "/index.html"})
-    public String routeIndex(Model model) {
+    public String routeIndex(Model model, HttpSession session) {
         List<CategoryEntity> categoryEntityList = categoryService.listByParentId(0L);
         model.addAttribute("categoryList", categoryEntityList);
+        System.out.println(session.getAttribute(AuthConstant.SESSION_LOGIN_INFO));
         return "index";
     }
 

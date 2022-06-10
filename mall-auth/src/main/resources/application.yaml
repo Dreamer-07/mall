@@ -1,0 +1,22 @@
+server:
+  port: 7010
+spring:
+  application:
+    name: mall-auth
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  session:
+    store-type: redis
+    timeout: 30m
+  redis:
+    host: 192.168.102.150
+auth:
+  oauth2:
+    weibo:
+      access-token-url: https://api.weibo.com/oauth2/access_token
+      show-user-url: https://api.weibo.com/2/users/show.json?access_token={access_token}&uid={uid}
+      app-key: 2089313966
+      app-secret: c1b0b4ac62c08c85fb9db6ce34ce8f07
+      redirect-uri: http://auth.mall.com/auth/oauth2/weibo/authorize/success

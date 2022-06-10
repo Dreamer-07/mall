@@ -13,3 +13,11 @@ spring:
       oss:
         endpoint: oss-cn-shenzhen.aliyuncs.com
         bucketName: prover-mall
+      sms:
+        host: https://gyytz.market.alicloudapi.com
+        path: /sms/smsSend
+        app-code: dda247773bc842f29528f477fa510941
+        sms-sign-id: 2e65b1bb3d054466b82f0c9d125465e2
+        template-id: 908e94ccf08b4476ba6c876d13f084ad
+  redis:
+    host: 192.168.102.150

@@ -1,8 +1,8 @@
-package pers.prover.mall.product;
+package pers.prover.mall.auth;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
@@ -10,17 +10,15 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 /**
  * @author 小丶木曾义仲丶哈牛柚子露丶蛋卷
  * @version 1.0
- * @date 2022/5/29 21:05
+ * @date 2022/6/9 15:36
  */
-@EnableRedisHttpSession
-@MapperScan("pers.prover.mall.product.dao")
-@EnableFeignClients(basePackages = "pers.prover.mall.product.client")
+@EnableFeignClients
 @EnableDiscoveryClient
-@SpringBootApplication
-public class MallProductApplication {
+@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
+public class MallAuthApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MallProductApplication.class, args);
+        SpringApplication.run(MallAuthApplication.class, args);
     }
 
 }

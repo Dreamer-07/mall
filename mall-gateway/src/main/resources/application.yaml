@@ -14,6 +14,7 @@ spring:
           order: 2
           predicates:
             - Path=/admin/**
+
         - id: product_route
           uri: lb://mall-product
           order: 1
@@ -23,29 +24,45 @@ spring:
           uri: lb://mall-product
           order: 1
           predicates:
-            - Host=mall.com,*.mall.com
+            - Host=mall.com
+
         - id: member_route
           uri: lb://mall-member
           order: 1
           predicates:
             - Path=/*/member/**
+
         - id: coupon_route
           uri: lb://mall-coupon
           order: 1
           predicates:
             - Path=/*/coupon/**
+
         - id: ware_route
           uri: lb://mall-ware
           order: 1
           predicates:
             - Path=/*/ware/**
+
         - id: search_route
           uri: lb://mall-search
           order: 1
           predicates:
             - Path=/*/search/**
+
         - id: thirdparty_route
           uri: lb://mall-thirdparty
           order: 1
           predicates:
             - Path=/*/thirdparty/**
+        - id: product_prod_route
+          uri: lb://mall-product
+          order: 1
+          predicates:
+            - Host=thirdparty.mall.com
+
+        - id: product_auth_route
+          uri: lb://mall-auth
+          order: 1
+          predicates:
+            - Host=auth.mall.com
