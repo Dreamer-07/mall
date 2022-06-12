@@ -44,6 +44,7 @@ public class OAuth2AuthServiceImpl implements OAuth2AuthService {
         if (oAuth2WeiboAccessTokenBo == null) {
             throw new RuntimeException("获取授权信息失败!!");
         }
+        // 先通过远程调用判断当前系统中是否存在对应的用户(根据 uid)
         R memberInfoByUidResult = memberFeignClient.getMemberInfoByUid(oAuth2WeiboAccessTokenBo.getUid());
         // 获取账户信息
         MemberLoginInfoVo memberLoginInfoVo = memberInfoByUidResult.getData(new TypeReference<MemberLoginInfoVo>() {
@@ -52,6 +53,7 @@ public class OAuth2AuthServiceImpl implements OAuth2AuthService {
         if (memberLoginInfoVo != null) {
             return memberLoginInfoVo;
         }
+        // 如果用户是第一次登录，就需要通过微博的api获取对应的信息，完成注册后再返回
         HashMap<String, String> paramMap = new HashMap<>();
         paramMap.put("access_token", oAuth2WeiboAccessTokenBo.getAccess_token());
         paramMap.put("uid", oAuth2WeiboAccessTokenBo.getUid());

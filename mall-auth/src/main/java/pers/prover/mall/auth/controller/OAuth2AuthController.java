@@ -60,7 +60,7 @@ public class OAuth2AuthController {
         paramMap.add("redirect_uri", oAuth2WeiboConfigProperties.getRedirectUri());
         paramMap.add("code", code);
 
-
+        // 获取用户 token 和 uid
         try {
             // 构建请求体
             RequestEntity<MultiValueMap<String, String>> requestEntity = RequestEntity
@@ -71,7 +71,7 @@ public class OAuth2AuthController {
             // 发送请求
             ResponseEntity<OAuth2WeiboAccessTokenBo> accessTokenBoResponseEntity = restTemplate.postForEntity(oAuth2WeiboConfigProperties.getAccessTokenUrl(), requestEntity, OAuth2WeiboAccessTokenBo.class);
             OAuth2WeiboAccessTokenBo oAuth2WeiboAccessTokenBo = accessTokenBoResponseEntity.getBody();
-            // 获取微博用户信息
+            // 通过 uid/token 获取微博用户信息
             MemberLoginInfoVo memberLoginInfoVo = oAuth2AuthService.getWeiboMemberInfo(oAuth2WeiboAccessTokenBo);
             // 保存到会话中
             session.setAttribute(AuthConstant.SESSION_LOGIN_INFO, memberLoginInfoVo);

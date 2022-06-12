@@ -1,5 +1,6 @@
 package pers.prover.mall.product.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +45,13 @@ public class SkuSaleAttrValueServiceImpl extends ServiceImpl<SkuSaleAttrValueDao
     @Override
     public List<SkuItemVo.SpuSaleAttrVo> saleAttrList(Long spuId) {
         return this.baseMapper.saleAttrList(spuId);
+    }
+
+    @Override
+    public List<SkuSaleAttrValueEntity> listBySkuId(Long skuId) {
+        LambdaQueryWrapper<SkuSaleAttrValueEntity> selectLqw = new LambdaQueryWrapper<SkuSaleAttrValueEntity>()
+                .eq(SkuSaleAttrValueEntity::getSkuId, skuId);
+        return this.list(selectLqw);
     }
 
 }

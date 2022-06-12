@@ -23,10 +23,17 @@ public interface SkuSaleAttrValueService extends IService<SkuSaleAttrValueEntity
     void save(Long skuId, List<SpuSaveVo.Skus.Attr> attr);
 
     /**
-     * 获取 spu 销售属性的组合
+     * 获取 spu 下所有 sku 的销售属性
      * @param spuId
      * @return
      */
     List<SkuItemVo.SpuSaleAttrVo> saleAttrList(Long spuId);
+
+    /**
+     * 获取 sku 的销售属性
+     * @param skuId
+     * @return
+     */
+    List<SkuSaleAttrValueEntity> listBySkuId(Long skuId);
 }
 

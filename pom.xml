@@ -20,6 +20,7 @@
         <module>mall-thirdparty</module>
         <module>mall-search</module>
         <module>mall-auth</module>
+        <module>mall-cart</module>
     </modules>
     <packaging>pom</packaging>
 

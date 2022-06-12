@@ -1,0 +1,19 @@
+server:
+  port: 7011
+spring:
+  application:
+    name: mall-cart
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1
+  session:
+    store-type: redis
+    timeout: 30m
+  redis:
+    host: 192.168.102.150
+  cache:
+    type: redis
+    redis:
+      # 指定redis中的过期时间为1h
+      time-to-live: 3600000
